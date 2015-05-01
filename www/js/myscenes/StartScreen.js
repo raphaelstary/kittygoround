@@ -14,20 +14,22 @@ var StartScreen = (function () {
         var drawables = [];
         var buttons = [];
 
-        var cloud1 = this.stage.drawFresh(Width.THIRD, Height.QUARTER, 'cloud1', 2);
+        var cloud1 = this.stage.drawFresh(Width.THIRD, Height.get(48, 8), 'cloud1', 2);
         drawables.push(cloud1);
-        var cloud2 = this.stage.drawFresh(Width.THREE_QUARTER, Height.THIRD, 'cloud2', 2);
+        var cloud2 = this.stage.drawFresh(Width.TWO_THIRD, Height.get(48, 20), 'cloud2', 2);
         drawables.push(cloud2);
-        var cloud3 = this.stage.drawFresh(Width.QUARTER, Height.TWO_THIRD, 'cloud3', 2);
+        var cloud3 = this.stage.drawFresh(Width.QUARTER, Height.get(48, 26), 'cloud3', 2);
         drawables.push(cloud3);
-        var cloud4 = this.stage.drawFresh(Width.TWO_THIRD, Height.THREE_QUARTER, 'cloud4', 2);
+        var cloud4 = this.stage.drawFresh(Width.THREE_QUARTER, Height.get(48, 31), 'cloud4', 2);
         drawables.push(cloud4);
+        var cloud5 = this.stage.drawFresh(Width.get(5,2), Height.get(48, 45), 'cloud1', 2);
+        drawables.push(cloud5);
 
         var goFS = this.stage.drawFresh(Width.get(32, 2), Height.get(48, 2), 'go_fullscreen');
         drawables.push(goFS);
         var soundOn = this.stage.drawFresh(Width.get(32, 2), Height.get(48, 5), 'unmute');
         drawables.push(soundOn);
-        var info = this.stage.drawTextWithInput(Width.get(32, 2), Height.get(48, 8), 'i', Font._30, 'GameFont', '#283032');
+        var info = this.stage.drawTextWithInput(Width.get(32, 2), Height.get(48, 8), 'i', Font._30, 'GameFont', '#283032').drawable;
         drawables.push(info);
 
         var logoKitty = this.stage.drawText(Width.HALF, Height.get(48, 12), 'Kitty', Font._15, 'GameFont', '#fc6da4');
@@ -35,13 +37,20 @@ var StartScreen = (function () {
         var logoGoRound = this.stage.drawText(Width.HALF, Height.get(48, 15), 'go round', Font._15, 'GameFont', '#fc6da4');
         drawables.push(logoGoRound);
 
+        function getButtonWidth(width, height) {
+            if (width < height) {
+                return Width.HALF(width);
+            }
+            return Width.QUARTER(width);
+        }
+
         var start = this.buttons.createPrimaryButton(Width.HALF, Height.get(48,36), this.messages.get('start', 'play'), function () {
             self.timer.doLater(toNextScene, 6);
-        }, 3);
+        }, 3, false, getButtonWidth);
         buttons.push(start);
-        var moreGames = this.buttons.createPrimaryButton(Width.HALF, Height.get(48, 40), this.messages.get('start', 'more_games'), function () {
+        var moreGames = this.buttons.createPrimaryButton(Width.HALF, Height.get(480, 405), this.messages.get('start', 'more_games'), function () {
             window.location.href = window.moreGamesLink;
-        }, 3);
+        }, 3, false, getButtonWidth);
         buttons.push(moreGames);
 
         var itIsOver = false;
