@@ -16,7 +16,9 @@ var installMyScenes = (function (SceneManager) {
 
         var sceneManager = new SceneManager();
         var startScreen = new StartScreen(sceneServices);
+        var playScreen = new PlayScreen(sceneServices);
         sceneManager.add(startScreen.show.bind(startScreen), true);
+        sceneManager.add(playScreen.show.bind(playScreen));
 
         return sceneManager;
     }
