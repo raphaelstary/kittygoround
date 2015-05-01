@@ -23,6 +23,13 @@ var StartScreen = (function () {
         var cloud4 = this.stage.drawFresh(Width.TWO_THIRD, Height.THREE_QUARTER, 'cloud4', 2);
         drawables.push(cloud4);
 
+        var goFS = this.stage.drawFresh(Width.get(32, 2), Height.get(48, 2), 'go_fullscreen');
+        drawables.push(goFS);
+        var soundOn = this.stage.drawFresh(Width.get(32, 2), Height.get(48, 5), 'unmute');
+        drawables.push(soundOn);
+        var info = this.stage.drawTextWithInput(Width.get(32, 2), Height.get(48, 8), 'i', Font._30, 'GameFont', '#283032');
+        drawables.push(info);
+
         var logoKitty = this.stage.drawText(Width.HALF, Height.get(48, 12), 'Kitty', Font._15, 'GameFont', '#fc6da4');
         drawables.push(logoKitty);
         var logoGoRound = this.stage.drawText(Width.HALF, Height.get(48, 15), 'go round', Font._15, 'GameFont', '#fc6da4');
