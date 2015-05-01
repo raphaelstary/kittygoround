@@ -1,12 +1,16 @@
 {
     "en": {
-        "scene_name": {
-            "key": "message"
+        "display_name": "English",
+        "start": {
+            "play": "play",
+            "more_games": "more games"
         }
     },
     "de": {
-        "scene_name": {
-            "key": "nachricht"
+        "display_name": "Deutsch",
+        "start": {
+            "play": "spielen",
+            "more_games": "mehr spiele"
         }
     }
 }
