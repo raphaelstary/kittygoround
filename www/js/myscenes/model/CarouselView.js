@@ -14,11 +14,11 @@ var CarouselView = (function (Width, Height, Math, Transition, add, subtract) {
         }
 
         var topCat = this.stage.drawFresh(Width.HALF, subtract(Height.HALF, getHeight), one, 4);
-
+        topList.forEach(this.stage.remove.bind(this.stage));
         this.__turn(topList, -Math.PI / 2, Math.PI / 2, undefined, topList.length + 1);
 
         var bottomCat = this.stage.drawFresh(Width.HALF, add(Height.HALF, getHeight), two, 4);
-
+        bottomList.forEach(this.stage.remove.bind(this.stage));
         this.__turn(bottomList, Math.PI / 2, Math.PI / 2 * 3, undefined, bottomList.length + 1);
 
         return {

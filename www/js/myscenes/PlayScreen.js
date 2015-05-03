@@ -44,8 +44,8 @@ var PlayScreen = (function () {
         var playerController = PlayFactory.createPlayerController(world);
         world.addTwoCats();
         world.addTwoCats();
-        //world.addTwoCats();
-        //world.addTwoCats();
+        world.addTwoCats();
+        world.addTwoCats();
 
         var playerListener = this.events.subscribe(Event.POINTER, function (pointer) {
             if (pointer.type == 'down') {
