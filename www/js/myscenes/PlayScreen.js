@@ -40,61 +40,22 @@ var PlayScreen = (function () {
         var innerCircle = this.stage.drawCircle(Width.HALF, Height.HALF, Font._30, LEMONADE, true);
         drawables.push(innerCircle);
 
-        var topCat = this.stage.drawFresh(Width.HALF,
-            subtract(Height.HALF, outerCircle.getHeightHalf.bind(outerCircle)), 'white_cat', 4);
-        var bottomCat = this.stage.drawFresh(Width.HALF, add(Height.HALF, outerCircle.getHeightHalf.bind(outerCircle)),
-            'black_cat', 4);
+        var world = PlayFactory.createWorld(this.stage);
+        var playerController = PlayFactory.createPlayerController(world);
+        world.addTwoCats();
+        world.addTwoCats();
+        //world.addTwoCats();
+        //world.addTwoCats();
 
-        this.events.subscribe(Event.POINTER, function (pointer) {
+        var playerListener = this.events.subscribe(Event.POINTER, function (pointer) {
             if (pointer.type == 'down') {
                 if (pointer.x < Width.HALF(self.device.width)) {
-                    turnLeft();
+                    playerController.turnLeft();
                 } else {
-                    turnRight();
+                    playerController.turnRight();
                 }
             }
         });
-
-        var speed = 15;
-        var turning = false;
-        var callbacks;
-
-        function turnLeft() {
-            if (turning)
-                return;
-            callbacks = 2;
-            turning = true;
-
-            self.stage.moveCircular(topCat, Width.HALF, Height.HALF, radiusFn, Math.PI / 2 * 3, Math.PI / 2, speed,
-                Transition.EASE_OUT_EXPO, false, endTurn);
-            self.stage.moveCircular(bottomCat, Width.HALF, Height.HALF, radiusFn, Math.PI / 2, -Math.PI / 2, speed,
-                Transition.EASE_OUT_EXPO, false, endTurn);
-            var pointer = bottomCat;
-            bottomCat = topCat;
-            topCat = pointer;
-        }
-
-        function endTurn() {
-            callbacks--;
-            if (callbacks <= 0) {
-                turning = false;
-            }
-        }
-
-        function turnRight() {
-            if (turning)
-                return;
-            callbacks = 2;
-            turning = true;
-
-            self.stage.moveCircular(topCat, Width.HALF, Height.HALF, radiusFn, -Math.PI / 2, Math.PI / 2, speed,
-                Transition.EASE_OUT_EXPO, false, endTurn);
-            self.stage.moveCircular(bottomCat, Width.HALF, Height.HALF, radiusFn, Math.PI / 2, Math.PI / 2 * 3, speed,
-                Transition.EASE_OUT_EXPO, false, endTurn);
-            var pointer = bottomCat;
-            bottomCat = topCat;
-            topCat = pointer;
-        }
 
         var itIsOver = false;
 
