@@ -1,4 +1,6 @@
-var PlayFactory = (function (World, Carousel, CarouselView, PlayerController, LevelGenerator, ObstaclesView) {
+var PlayFactory = (function (World, Carousel, CarouselView, PlayerController, LevelGenerator, ObstaclesView,
+    ScoreBoardView) {
+
     "use strict";
     return {
         createWorld: function (stage, events, gameOver) {
@@ -8,11 +10,11 @@ var PlayFactory = (function (World, Carousel, CarouselView, PlayerController, Le
 
             var levels = new LevelGenerator(new ObstaclesView(stage, colors, topObstacles, bottomObstacles), events);
 
-            return new World(stage, new Carousel(), new CarouselView(stage), levels, colors, topObstacles,
-                bottomObstacles, gameOver);
+            return new World(stage, new Carousel(), new CarouselView(stage), levels, new ScoreBoardView(stage), colors,
+                topObstacles, bottomObstacles, gameOver);
         },
         createPlayerController: function (world) {
             return new PlayerController(world);
         }
     }
-})(World, Carousel, CarouselView, PlayerController, LevelGenerator, ObstaclesView);
+})(World, Carousel, CarouselView, PlayerController, LevelGenerator, ObstaclesView, ScoreBoardView);

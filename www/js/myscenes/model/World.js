@@ -1,17 +1,21 @@
 var World = (function (CatGenerator, Object) {
     "use strict";
 
-    function World(stage, carouselStore, carouselView, levels, colors, topObstacles, bottomObstacles, gameOver) {
+    function World(stage, carouselStore, carouselView, levels, scoreBoardView, colors, topObstacles, bottomObstacles,
+        gameOver) {
         this.stage = stage;
         this.carouselStore = carouselStore;
         this.carouselView = carouselView;
         this.levels = levels;
+        this.scoreBoardView = scoreBoardView;
 
         this.colors = colors;
         this.topObstacles = topObstacles;
         this.bottomObstacles = bottomObstacles;
 
         this.gameOver = gameOver;
+
+        this.points = 0;
     }
 
     World.prototype.addTwoCats = function () {
@@ -43,35 +47,31 @@ var World = (function (CatGenerator, Object) {
                 cat.getEndY() > obstacle.getCornerY() && cat.getCornerY() < obstacle.getEndY()
         }
 
-        Object.keys(this.topObstacles).forEach(function (key) {
-            var obstacleWrapper = this.topObstacles[key];
-            var cat = this.carouselStore.getTopDrawable();
-            if (isHit(cat, obstacleWrapper.drawable)) {
+        function iterateOverObstacles(obstacles, cat, catColor) {
+            return function (key) {
+                var obstacleWrapper = obstacles[key];
+                if (isHit(cat, obstacleWrapper.drawable)) {
 
-                if (obstacleWrapper.color == this.carouselStore.getTopColor()) {
-                    console.log("good collision");
-                } else {
-                    console.log("bad collision");
+                    if (obstacleWrapper.color == catColor) {
+                        this.increaseScore();
+                    } else {
+                        this.gameOver();
+                    }
+                    this.stage.remove(obstacleWrapper.drawable);
+                    delete obstacles[key];
                 }
-                this.stage.remove(obstacleWrapper.drawable);
-                delete this.topObstacles[key];
-            }
-        }, this);
+            };
+        }
 
-        Object.keys(this.bottomObstacles).forEach(function (key) {
-            var obstacleWrapper = this.bottomObstacles[key];
-            var cat = this.carouselStore.getBottomDrawable();
-            if (isHit(cat, obstacleWrapper.drawable)) {
+        Object.keys(this.topObstacles).forEach(iterateOverObstacles(this.topObstacles,
+            this.carouselStore.getTopDrawable(), this.carouselStore.getTopColor()), this);
 
-                if (obstacleWrapper.color == this.carouselStore.getBottomColor()) {
-                    console.log("good collision");
-                } else {
-                    console.log("bad collision");
-                }
-                this.stage.remove(obstacleWrapper.drawable);
-                delete this.bottomObstacles[key];
-            }
-        }, this);
+        Object.keys(this.bottomObstacles).forEach(iterateOverObstacles(this.bottomObstacles,
+            this.carouselStore.getBottomDrawable(), this.carouselStore.getBottomColor()), this);
+    };
+
+    World.prototype.increaseScore = function () {
+        this.scoreBoardView.changeScore(++this.points);
     };
 
     World.prototype.update = function () {

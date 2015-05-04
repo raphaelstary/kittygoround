@@ -24,9 +24,6 @@ var PlayScreen = (function () {
         var pauseBtn = this.stage.drawFresh(Width.get(32, 2), Height.get(48, 2), 'pause');
         drawables.push(pauseBtn);
 
-        var points = this.stage.drawText(Width.get(32, 28), Height.get(48, 3), '0', Font._15, 'GameFont', '#fc6da4');
-        drawables.push(points);
-
         var left = this.stage.drawFresh(Width.get(32, 4), Height.get(48, 44), 'left', undefined, undefined, undefined,
             undefined, 3);
         drawables.push(left);
