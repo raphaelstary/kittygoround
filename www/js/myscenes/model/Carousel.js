@@ -58,6 +58,14 @@ var Carousel = (function () {
         return this.bottom.color;
     };
 
+    Carousel.prototype.getTopDrawable = function () {
+        return this.top.drawable;
+    };
+
+    Carousel.prototype.getBottomDrawable = function () {
+        return this.bottom.drawable;
+    };
+
     Carousel.prototype.getNodesFromTopClockwise = function () {
         return this.__getNodes(this.top, 'drawable', 'clockwise');
     };

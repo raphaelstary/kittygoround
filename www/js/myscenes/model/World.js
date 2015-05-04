@@ -1,7 +1,8 @@
-var World = (function (CatGenerator) {
+var World = (function (CatGenerator, Object) {
     "use strict";
 
-    function World(carouselStore, carouselView, levels, colors, topObstacles, bottomObstacles) {
+    function World(stage, carouselStore, carouselView, levels, colors, topObstacles, bottomObstacles, gameOver) {
+        this.stage = stage;
         this.carouselStore = carouselStore;
         this.carouselView = carouselView;
         this.levels = levels;
@@ -9,6 +10,8 @@ var World = (function (CatGenerator) {
         this.colors = colors;
         this.topObstacles = topObstacles;
         this.bottomObstacles = bottomObstacles;
+
+        this.gameOver = gameOver;
     }
 
     World.prototype.addTwoCats = function () {
@@ -35,7 +38,40 @@ var World = (function (CatGenerator) {
     };
 
     World.prototype.checkCollisions = function () {
+        function isHit(cat, obstacle) {
+            return cat.getEndX() > obstacle.getCornerX() && cat.getCornerX() < obstacle.getEndX() &&
+                cat.getEndY() > obstacle.getCornerY() && cat.getCornerY() < obstacle.getEndY()
+        }
 
+        Object.keys(this.topObstacles).forEach(function (key) {
+            var obstacleWrapper = this.topObstacles[key];
+            var cat = this.carouselStore.getTopDrawable();
+            if (isHit(cat, obstacleWrapper.drawable)) {
+
+                if (obstacleWrapper.color == this.carouselStore.getTopColor()) {
+                    console.log("good collision");
+                } else {
+                    console.log("bad collision");
+                }
+                this.stage.remove(obstacleWrapper.drawable);
+                delete this.topObstacles[key];
+            }
+        }, this);
+
+        Object.keys(this.bottomObstacles).forEach(function (key) {
+            var obstacleWrapper = this.bottomObstacles[key];
+            var cat = this.carouselStore.getBottomDrawable();
+            if (isHit(cat, obstacleWrapper.drawable)) {
+
+                if (obstacleWrapper.color == this.carouselStore.getBottomColor()) {
+                    console.log("good collision");
+                } else {
+                    console.log("bad collision");
+                }
+                this.stage.remove(obstacleWrapper.drawable);
+                delete this.bottomObstacles[key];
+            }
+        }, this);
     };
 
     World.prototype.update = function () {
@@ -43,4 +79,4 @@ var World = (function (CatGenerator) {
     };
 
     return World;
-})(CatGenerator);
+})(CatGenerator, Object);

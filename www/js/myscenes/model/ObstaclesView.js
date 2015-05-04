@@ -18,7 +18,7 @@ var ObstaclesView = (function (range, calcScreenConst, Width, Height, Transition
         }
 
         var kitty = this.__randomKitty(speed, getStartY);
-        this.topObstacles[kitty.id] = kitty;
+        this.topObstacles[kitty.drawable.id] = kitty;
     };
 
     ObstaclesView.prototype.randomKittyFromBottom = function (speed) {
@@ -31,7 +31,7 @@ var ObstaclesView = (function (range, calcScreenConst, Width, Height, Transition
         }
 
         var kitty = this.__randomKitty(speed, getStartY);
-        this.bottomObstacles[kitty.id] = kitty;
+        this.bottomObstacles[kitty.drawable.id] = kitty;
     };
 
     ObstaclesView.prototype.__randomKitty = function (speed, startYFn) {
@@ -60,7 +60,10 @@ var ObstaclesView = (function (range, calcScreenConst, Width, Height, Transition
             }
         ], true);
 
-        return kitty.drawable;
+        return {
+            drawable: kitty.drawable,
+            color: catColor
+        };
     };
 
     return ObstaclesView;
