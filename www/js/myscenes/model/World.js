@@ -1,9 +1,12 @@
 var World = (function (CatGenerator) {
     "use strict";
 
-    function World(carouselStore, carouselView) {
+    function World(carouselStore, carouselView, topObstacles, bottomObstacles) {
         this.carouselStore = carouselStore;
         this.carouselView = carouselView;
+
+        this.topObstacles = topObstacles;
+        this.bottomObstacles = bottomObstacles;
     }
 
     World.prototype.addTwoCats = function () {
@@ -23,6 +26,10 @@ var World = (function (CatGenerator) {
         this.carouselView.turnRight(this.carouselStore.getNodesFromTopClockwise(),
             this.carouselStore.getNodesFromBottomClockwise(), callback);
         this.carouselStore.turnRight();
+    };
+
+    World.prototype.checkCollisions = function () {
+
     };
 
     return World;

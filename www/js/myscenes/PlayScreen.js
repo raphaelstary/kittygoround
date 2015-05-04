@@ -40,12 +40,14 @@ var PlayScreen = (function () {
         var innerCircle = this.stage.drawCircle(Width.HALF, Height.HALF, Font._30, LEMONADE, true);
         drawables.push(innerCircle);
 
-        var world = PlayFactory.createWorld(this.stage);
+        var topObstacles = {};
+        var bottomObstacles = {};
+        var world = PlayFactory.createWorld(this.stage, topObstacles, bottomObstacles);
         var playerController = PlayFactory.createPlayerController(world);
         world.addTwoCats();
-        world.addTwoCats();
-        world.addTwoCats();
-        world.addTwoCats();
+        var worldListener = this.events.subscribe(Event.TICK_COLLISION, world.checkCollisions.bind(world));
+        var levels = PlayFactory.createLevels(this.stage, topObstacles, bottomObstacles);
+        var levelsListener = this.events.subscribe(Event.TICK_MOVE, levels.update.bind(levels));
 
         var playerListener = this.events.subscribe(Event.POINTER, function (pointer) {
             if (pointer.type == 'down') {
