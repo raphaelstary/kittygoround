@@ -49,13 +49,31 @@ var PlayScreen = (function () {
         var levels = PlayFactory.createLevels(this.stage, topObstacles, bottomObstacles);
         var levelsListener = this.events.subscribe(Event.TICK_MOVE, levels.update.bind(levels));
 
-        var playerListener = this.events.subscribe(Event.POINTER, function (pointer) {
+        var pointerListener = this.events.subscribe(Event.POINTER, function (pointer) {
             if (pointer.type == 'down') {
                 if (pointer.x < Width.HALF(self.device.width)) {
                     playerController.turnLeft();
                 } else {
                     playerController.turnRight();
                 }
+            }
+        });
+
+        var leftKeyPressed = false;
+        var rightKeyPressed = false;
+        var keyListener = this.events.subscribe(Event.KEY_BOARD, function (keyBoard) {
+            if (keyBoard[Key.LEFT] && !leftKeyPressed) {
+                leftKeyPressed = true;
+                playerController.turnLeft();
+            } else if (!keyBoard[Key.LEFT] && leftKeyPressed) {
+                leftKeyPressed = false;
+            }
+
+            if (keyBoard[Key.RIGHT] && !rightKeyPressed) {
+                rightKeyPressed = true;
+                playerController.turnRight();
+            } else if (!keyBoard[Key.RIGHT] && rightKeyPressed) {
+                rightKeyPressed = false;
             }
         });
 

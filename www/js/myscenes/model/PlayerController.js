@@ -1,32 +1,19 @@
 var PlayerController = (function () {
     "use strict";
 
-    function PlayerController(world) {
+    function PlayerController(world, leftDrawable, rightDrawable) {
         this.world = world;
 
-        this.turning = false;
+        this.leftDrawable = leftDrawable;
+        this.rightDrawable = rightDrawable;
     }
 
     PlayerController.prototype.turnLeft = function () {
-        if (this.turning)
-            return;
-        this.turning = true;
-
-        var self = this;
-        this.world.turnCarouselLeft(function () {
-            self.turning = false;
-        });
+        this.world.turnCarouselLeft();
     };
 
     PlayerController.prototype.turnRight = function () {
-        if (this.turning)
-            return;
-        this.turning = true;
-
-        var self = this;
-        this.world.turnCarouselRight(function () {
-            self.turning = false;
-        });
+        this.world.turnCarouselRight();
     };
 
     return PlayerController;

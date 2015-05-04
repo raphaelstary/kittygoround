@@ -14,11 +14,9 @@ var CarouselView = (function (Width, Height, Math, Transition, add, subtract) {
         }
 
         var topCat = this.stage.drawFresh(Width.HALF, subtract(Height.HALF, getHeight), one, 4);
-        topList.forEach(this.stage.remove.bind(this.stage));
         this.__turn(topList, -Math.PI / 2, Math.PI / 2, undefined, topList.length + 1);
 
         var bottomCat = this.stage.drawFresh(Width.HALF, add(Height.HALF, getHeight), two, 4);
-        bottomList.forEach(this.stage.remove.bind(this.stage));
         this.__turn(bottomList, Math.PI / 2, Math.PI / 2 * 3, undefined, bottomList.length + 1);
 
         return {
@@ -30,8 +28,8 @@ var CarouselView = (function (Width, Height, Math, Transition, add, subtract) {
     CarouselView.prototype.turnLeft = function (topList, bottomList, callback) {
         var callbacks = 0;
 
-        callbacks += this.__turn(topList, Math.PI / 2 * 3, Math.PI / 2, endTurn);
-        callbacks += this.__turn(bottomList, Math.PI / 2, -Math.PI / 2, endTurn);
+        callbacks += this.__turn(topList, Math.PI / 2 * 3, Math.PI / 2, callback ? endTurn : undefined);
+        callbacks += this.__turn(bottomList, Math.PI / 2, -Math.PI / 2, callback ? endTurn : undefined);
 
         function endTurn() {
             callbacks--;
@@ -44,8 +42,8 @@ var CarouselView = (function (Width, Height, Math, Transition, add, subtract) {
     CarouselView.prototype.turnRight = function (topList, bottomList, callback) {
         var callbacks = 0;
 
-        callbacks += this.__turn(topList, -Math.PI / 2, Math.PI / 2, endTurn);
-        callbacks += this.__turn(bottomList, Math.PI / 2, Math.PI / 2 * 3, endTurn);
+        callbacks += this.__turn(topList, -Math.PI / 2, Math.PI / 2, callback ? endTurn : undefined);
+        callbacks += this.__turn(bottomList, Math.PI / 2, Math.PI / 2 * 3, callback ? endTurn : undefined);
 
         function endTurn() {
             callbacks--;
@@ -56,6 +54,8 @@ var CarouselView = (function (Width, Height, Math, Transition, add, subtract) {
     };
 
     CarouselView.prototype.__turn = function (nodes, startAngle, endAngle, callback, customCount) {
+        nodes.forEach(this.stage.remove.bind(this.stage));
+
         var callbackCount = 0;
         var count = customCount || nodes.length;
         var arc = getLength(startAngle, endAngle);
