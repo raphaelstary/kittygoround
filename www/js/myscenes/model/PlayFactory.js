@@ -1,14 +1,17 @@
-var PlayFactory = (function (World, Carousel, CarouselView, PlayerController, LevelGenerator) {
+var PlayFactory = (function (World, Carousel, CarouselView, PlayerController, LevelGenerator, ObstaclesView) {
     "use strict";
     return {
-        createWorld: function (stage, topObstacles, bottomObstacles) {
-            return new World(new Carousel(), new CarouselView(stage), topObstacles, bottomObstacles);
+        createWorld: function (stage, events) {
+            var colors = [];
+            var topObstacles = {};
+            var bottomObstacles = {};
+
+            var levels = new LevelGenerator(new ObstaclesView(stage, colors, topObstacles, bottomObstacles), events);
+
+            return new World(new Carousel(), new CarouselView(stage), levels, colors, topObstacles, bottomObstacles);
         },
         createPlayerController: function (world) {
             return new PlayerController(world);
-        },
-        createLevels: function (stage, topObstacles, bottomObstacles) {
-            return new LevelGenerator(stage, topObstacles, bottomObstacles);
         }
     }
-})(World, Carousel, CarouselView, PlayerController, LevelGenerator);
+})(World, Carousel, CarouselView, PlayerController, LevelGenerator, ObstaclesView);

@@ -34,48 +34,23 @@ var PlayScreen = (function () {
             undefined, undefined, 3);
         drawables.push(right);
 
-        var radiusFn = Font._20;
+        var radiusFn = Font._10;
         var outerCircle = this.stage.drawCircle(Width.HALF, Height.HALF, radiusFn, BUBBLE_GUM, false, Font._35);
         drawables.push(outerCircle);
         var innerCircle = this.stage.drawCircle(Width.HALF, Height.HALF, Font._30, LEMONADE, true);
         drawables.push(innerCircle);
 
-        var topObstacles = {};
-        var bottomObstacles = {};
-        var world = PlayFactory.createWorld(this.stage, topObstacles, bottomObstacles);
-        var playerController = PlayFactory.createPlayerController(world);
+        var world = PlayFactory.createWorld(this.stage, this.events);
+
         world.addTwoCats();
-        var worldListener = this.events.subscribe(Event.TICK_COLLISION, world.checkCollisions.bind(world));
-        var levels = PlayFactory.createLevels(this.stage, topObstacles, bottomObstacles);
-        var levelsListener = this.events.subscribe(Event.TICK_MOVE, levels.update.bind(levels));
+        var worldCollisionListener = this.events.subscribe(Event.TICK_COLLISION, world.checkCollisions.bind(world));
+        var worldLevelListener = this.events.subscribe(Event.TICK_MOVE, world.update.bind(world));
 
-        var pointerListener = this.events.subscribe(Event.POINTER, function (pointer) {
-            if (pointer.type == 'down') {
-                if (pointer.x < Width.HALF(self.device.width)) {
-                    playerController.turnLeft();
-                } else {
-                    playerController.turnRight();
-                }
-            }
-        });
+        var playerController = PlayFactory.createPlayerController(world);
+        var keyboardListener = installPlayerKeyBoard(this.events, playerController);
+        var pointerListener = installPlayerPointer(this.events, this.device, playerController);
 
-        var leftKeyPressed = false;
-        var rightKeyPressed = false;
-        var keyListener = this.events.subscribe(Event.KEY_BOARD, function (keyBoard) {
-            if (keyBoard[Key.LEFT] && !leftKeyPressed) {
-                leftKeyPressed = true;
-                playerController.turnLeft();
-            } else if (!keyBoard[Key.LEFT] && leftKeyPressed) {
-                leftKeyPressed = false;
-            }
 
-            if (keyBoard[Key.RIGHT] && !rightKeyPressed) {
-                rightKeyPressed = true;
-                playerController.turnRight();
-            } else if (!keyBoard[Key.RIGHT] && rightKeyPressed) {
-                rightKeyPressed = false;
-            }
-        });
 
         var itIsOver = false;
 

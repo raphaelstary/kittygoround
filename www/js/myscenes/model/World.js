@@ -1,16 +1,22 @@
 var World = (function (CatGenerator) {
     "use strict";
 
-    function World(carouselStore, carouselView, topObstacles, bottomObstacles) {
+    function World(carouselStore, carouselView, levels, colors, topObstacles, bottomObstacles) {
         this.carouselStore = carouselStore;
         this.carouselView = carouselView;
+        this.levels = levels;
 
+        this.colors = colors;
         this.topObstacles = topObstacles;
         this.bottomObstacles = bottomObstacles;
     }
 
     World.prototype.addTwoCats = function () {
         var newCats = CatGenerator.getTwoCats(this.carouselStore.getAllColors());
+        var self = this;
+        newCats.forEach(function (cat) {
+            self.colors.push(cat);
+        });
         var newDrawables = this.carouselView.addTwo(newCats[0], this.carouselStore.getNodesFromTopClockwise(),
             newCats[1], this.carouselStore.getNodesFromBottomClockwise());
         this.carouselStore.addTwo(newDrawables.top, newCats[0], newDrawables.bottom, newCats[1]);
@@ -30,6 +36,10 @@ var World = (function (CatGenerator) {
 
     World.prototype.checkCollisions = function () {
 
+    };
+
+    World.prototype.update = function () {
+        this.levels.update();
     };
 
     return World;
