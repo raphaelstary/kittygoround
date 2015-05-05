@@ -1,4 +1,4 @@
-var drawIcons = (function () {
+var drawIcons = (function (Width, Height, Font) {
     "use strict";
 
     function drawIcons(stage) {
@@ -16,4 +16,4 @@ var drawIcons = (function () {
     }
 
     return drawIcons;
-})();
+})(Width, Height, Font);

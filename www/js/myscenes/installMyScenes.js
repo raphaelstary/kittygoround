@@ -1,4 +1,5 @@
-var installMyScenes = (function (SceneManager) {
+var installMyScenes = (function (SceneManager, TapManager, Event, ButtonFactory, StartScreen, PlayScreen, EndScreen,
+    Font) {
     "use strict";
 
     var BLACK = '#283032';
@@ -17,11 +18,13 @@ var installMyScenes = (function (SceneManager) {
         var sceneManager = new SceneManager();
         var startScreen = new StartScreen(sceneServices);
         var playScreen = new PlayScreen(sceneServices);
+        var endScreen = new EndScreen(sceneServices);
         sceneManager.add(startScreen.show.bind(startScreen), true);
         sceneManager.add(playScreen.show.bind(playScreen));
+        sceneManager.add(endScreen.show.bind(endScreen));
 
         return sceneManager;
     }
 
     return installMyScenes;
-})(SceneManager);
+})(SceneManager, TapManager, Event, ButtonFactory, StartScreen, PlayScreen, EndScreen, Font);

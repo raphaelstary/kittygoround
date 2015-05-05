@@ -8,14 +8,44 @@ var LevelGenerator = (function (range) {
         this.levels = [
             {
                 id: 0,
-                maxObstacles: 100,
+                maxObstacles: 10,
 
-                timeToFirst: 180,
+                timeToFirst: 60,
                 percentageForTop: 50,
 
-                kittySpeed: 180,
-                pauseAfterKitty: 60,
-                maxTimeToNextKitty: 90
+                kittySpeed: 60 + 15,
+                pauseAfterKitty: 40,
+                maxTimeToNextKitty: 60
+            }, {
+                id: 1,
+                maxObstacles: 10,
+
+                timeToFirst: 120,
+                percentageForTop: 50,
+
+                kittySpeed: 60 + 15,
+                pauseAfterKitty: 90,
+                maxTimeToNextKitty: 120
+            }, {
+                id: 2,
+                maxObstacles: 10,
+
+                timeToFirst: 120,
+                percentageForTop: 50,
+
+                kittySpeed: 90 + 15,
+                pauseAfterKitty: 120,
+                maxTimeToNextKitty: 150
+            }, {
+                id: 3,
+                maxObstacles: 10000,
+
+                timeToFirst: 120,
+                percentageForTop: 50,
+
+                kittySpeed: 120 + 15,
+                pauseAfterKitty: 150,
+                maxTimeToNextKitty: 180
             }
         ];
 

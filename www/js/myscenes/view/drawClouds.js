@@ -1,4 +1,4 @@
-var drawClouds = (function () {
+var drawClouds = (function (Width, Height) {
     "use strict";
 
     function drawClouds(stage) {
@@ -18,4 +18,4 @@ var drawClouds = (function () {
     }
 
     return drawClouds;
-})();
+})(Width, Height);

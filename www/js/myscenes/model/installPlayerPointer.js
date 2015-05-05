@@ -1,10 +1,10 @@
-var installPlayerPointer = (function (Event, Width) {
+var installPlayerPointer = (function (Event) {
     "use strict";
 
     function installPlayerPointer(events, device, playerController) {
         return events.subscribe(Event.POINTER, function (pointer) {
             if (pointer.type == 'down') {
-                if (pointer.x < Width.HALF(device.width)) {
+                if (pointer.x < device.width / 2) {
                     playerController.turnLeft();
                 } else {
                     playerController.turnRight();
@@ -14,4 +14,4 @@ var installPlayerPointer = (function (Event, Width) {
     }
 
     return installPlayerPointer;
-})(Event, Width);
+})(Event);

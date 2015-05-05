@@ -1,4 +1,4 @@
-var World = (function (CatGenerator, Object) {
+var World = (function (CatGenerator, Object, iterateEntries) {
     "use strict";
 
     function World(stage, carouselStore, carouselView, levels, scoreBoardView, colors, topObstacles, bottomObstacles,
@@ -55,7 +55,7 @@ var World = (function (CatGenerator, Object) {
                     if (obstacleWrapper.color == catColor) {
                         this.increaseScore();
                     } else {
-                        this.gameOver();
+                        this.gameOver(this.points);
                     }
                     this.stage.remove(obstacleWrapper.drawable);
                     delete obstacles[key];
@@ -72,11 +72,26 @@ var World = (function (CatGenerator, Object) {
 
     World.prototype.increaseScore = function () {
         this.scoreBoardView.changeScore(++this.points);
+        if (this.points % 10 == 0) {
+            this.addTwoCats();
+        }
     };
 
     World.prototype.update = function () {
         this.levels.update();
     };
 
+    World.prototype.terminate = function () {
+        this.stage.remove(this.scoreBoardView.points);
+        iterateEntries(this.topObstacles, function (obstacleWrapper) {
+            this.stage.remove(obstacleWrapper.drawable);
+        }, this);
+        iterateEntries(this.bottomObstacles, function (obstacleWrapper) {
+            this.stage.remove(obstacleWrapper.drawable);
+        }, this);
+        this.carouselStore.getNodesFromTopClockwise().forEach(this.stage.remove.bind(this.stage));
+        this.carouselStore.getNodesFromBottomClockwise().forEach(this.stage.remove.bind(this.stage));
+    };
+
     return World;
-})(CatGenerator, Object);
+})(CatGenerator, Object, iterateEntries);

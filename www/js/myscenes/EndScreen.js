@@ -1,7 +1,7 @@
-var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawButtons) {
+var EndScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawButtons) {
     "use strict";
 
-    function StartScreen(services) {
+    function EndScreen(services) {
         this.stage = services.stage;
         this.storage = services.sceneStorage;
         this.buttons = services.buttons;
@@ -9,7 +9,7 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
         this.timer = services.timer;
     }
 
-    StartScreen.prototype.show = function (next) {
+    EndScreen.prototype.show = function (next) {
         var self = this;
         var drawables = [];
         var buttons = [];
@@ -21,11 +21,11 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
             drawables.push(elem);
         });
 
-        var logoKitty = this.stage.drawText(Width.HALF, Height.get(48, 12), 'Kitty', Font._15, 'GameFont', '#fc6da4');
-        drawables.push(logoKitty);
-        var logoGoRound = this.stage.drawText(Width.HALF, Height.get(48, 15), 'go round', Font._15, 'GameFont',
-            '#fc6da4');
-        drawables.push(logoGoRound);
+        var score = this.stage.drawText(Width.HALF, Height.get(48, 12), this.storage.points.toString(), Font._15,
+            'GameFont', '#fc6da4');
+        drawables.push(score);
+        var pointsTxt = this.stage.drawText(Width.HALF, Height.get(48, 15), 'points', Font._15, 'GameFont', '#fc6da4');
+        drawables.push(pointsTxt);
 
         drawButtons(this.buttons, this.messages, this.timer, toNextScene).forEach(function (elem) {
             buttons.push(elem);
@@ -45,5 +45,5 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
         }
     };
 
-    return StartScreen;
+    return EndScreen;
 })(drawClouds, drawIcons, Width, Height, Font, drawButtons);

@@ -1,4 +1,4 @@
-var drawButtons = (function () {
+var drawButtons = (function (Width, Height, window) {
     "use strict";
 
     function drawButtons(buttons, messages, timer, callback) {
@@ -26,4 +26,4 @@ var drawButtons = (function () {
     }
 
     return drawButtons;
-})();
+})(Width, Height, window);
