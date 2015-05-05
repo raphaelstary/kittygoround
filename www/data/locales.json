@@ -3,7 +3,8 @@
         "display_name": "English",
         "start": {
             "play": "play",
-            "more_games": "more games"
+            "more_games": "more games",
+            "start": "start"
         },
         "end": {
             "score": "score",
@@ -42,7 +43,8 @@
         "display_name": "Deutsch",
         "start": {
             "play": "spielen",
-            "more_games": "mehr Spiele"
+            "more_games": "mehr Spiele",
+            "start": "start"
         },
         "end": {
             "score": "Punkte",
