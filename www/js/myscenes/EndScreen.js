@@ -42,7 +42,7 @@ var EndScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawButto
         var bestTxt = this.stage.drawText(Width.HALF, Height.get(48, 20), this.messages.get('end', 'best'), Font._15,
             'GameFont', '#fc6da4');
         drawables.push(bestTxt);
-        var bestValueTxt = this.stage.drawText(Width.HALF, Height.get(48, 23), this.storage.points.toString(), Font._15,
+        var bestValueTxt = this.stage.drawText(Width.HALF, Height.get(48, 23), best.toString(), Font._15,
             'GameFont', '#fc6da4');
         drawables.push(bestValueTxt);
 

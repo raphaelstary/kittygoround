@@ -184,7 +184,7 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
             drawables.forEach(self.stage.remove.bind(self.stage));
             buttons.forEach(self.buttons.remove.bind(self.buttons));
 
-            next();
+            self.timer.doLater(next, 16);
         }
     };
 
