@@ -1,5 +1,5 @@
 var PlayScreen = (function (drawClouds, Width, Height, Font, Event, PlayFactory, installPlayerKeyBoard,
-    installPlayerPointer) {
+    installPlayerPointer, showMenu) {
     "use strict";
 
     function PlayScreen(services) {
@@ -26,7 +26,6 @@ var PlayScreen = (function (drawClouds, Width, Height, Font, Event, PlayFactory,
         });
 
         var pauseBtn = this.stage.drawFresh(Width.get(32, 2), Height.get(48, 2), 'pause');
-        drawables.push(pauseBtn);
 
         var left = this.stage.drawFresh(Width.get(32, 4), Height.get(48, 44), 'left', undefined, undefined, undefined,
             undefined, 3);
@@ -48,8 +47,71 @@ var PlayScreen = (function (drawClouds, Width, Height, Font, Event, PlayFactory,
         listener.push(this.events.subscribe(Event.TICK_MOVE, world.update.bind(world)));
 
         var playerController = PlayFactory.createPlayerController(world);
-        listener.push(installPlayerKeyBoard(this.events, playerController));
-        listener.push(installPlayerPointer(this.events, this.device, playerController));
+        var keyBoardListener;
+        var pointerListener;
+
+        function registerPlayerInput() {
+            keyBoardListener = installPlayerKeyBoard(self.events, playerController);
+            pointerListener = installPlayerPointer(self.events, self.device, playerController);
+        }
+
+        registerPlayerInput();
+
+        var goFs = false;
+        listener.push(self.events.subscribe(Event.SHOW_GO_FULL_SCREEN, function () {
+            goFs = true;
+        }));
+
+        listener.push(self.events.subscribe(Event.REMOVE_GO_FULL_SCREEN, function () {
+            goFs = false;
+        }));
+        var rotation = false;
+        listener.push(self.events.subscribe(Event.SHOW_ROTATE_DEVICE, function () {
+            rotation = true;
+        }));
+
+        listener.push(self.events.subscribe(Event.REMOVE_ROTATE_DEVICE, function () {
+            rotation = false;
+        }));
+
+        listener.push(self.events.subscribe(Event.PAGE_VISIBILITY, function (hidden) {
+            if (hidden) {
+                if (!isPaused)
+                    self.storage.shouldShowMenu = true;
+            } else {
+                self.timer.doLater(function () {
+                    if (self.storage.shouldShowMenu && !goFs && !rotation) {
+                        self.storage.shouldShowMenu = false;
+                        doThePause();
+                    }
+                }, 2);
+            }
+        }));
+
+        listener.push(self.events.subscribe(Event.RESUME, registerPlayerInput));
+        listener.push(self.events.subscribe(Event.PAUSE, function () {
+            self.events.unsubscribe(pointerListener);
+            self.events.unsubscribe(keyBoardListener);
+        }));
+
+        var isPaused = false;
+
+        function pause() {
+            isPaused = true;
+        }
+
+        function resume() {
+            pauseButton.used = false;
+            isPaused = false;
+        }
+
+        function doThePause() {
+            pause();
+            self.events.fireSync(Event.PAUSE);
+            self.storage.menuScene = 'pause_menu';
+            showMenu(self.stage, self.buttons, self.messages, self.events, self.sceneStorage, self.device, self.sounds,
+                resume);
+        }
 
         var itIsOver = false;
 
@@ -61,6 +123,9 @@ var PlayScreen = (function (drawClouds, Width, Height, Font, Event, PlayFactory,
             drawables.forEach(self.stage.remove.bind(self.stage));
             buttons.forEach(self.buttons.remove.bind(self.buttons));
             listener.forEach(self.events.unsubscribe.bind(self.events));
+            self.events.unsubscribe(keyBoardListener);
+            self.events.unsubscribe(pointerListener);
+            self.stage.remove(pauseBtn);
             world.terminate();
 
             self.storage.points = points;
@@ -69,4 +134,4 @@ var PlayScreen = (function (drawClouds, Width, Height, Font, Event, PlayFactory,
     };
 
     return PlayScreen;
-})(drawClouds, Width, Height, Font, Event, PlayFactory, installPlayerKeyBoard, installPlayerPointer);
+})(drawClouds, Width, Height, Font, Event, PlayFactory, installPlayerKeyBoard, installPlayerPointer, showMenu);
