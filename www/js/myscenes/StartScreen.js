@@ -4,24 +4,24 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
 
     function StartScreen(services) {
         this.stage = services.stage;
-        this.storage = services.sceneStorage;
+        this.sceneStorage = services.sceneStorage;
         this.buttons = services.buttons;
         this.messages = services.messages;
         this.timer = services.timer;
         this.device = services.device;
         this.loop = services.loop;
         this.events = services.events;
+        this.tap = services.tap;
+        this.sounds = services.sounds;
     }
 
     StartScreen.prototype.show = function (next) {
         var self = this;
         var drawables = [];
         var buttons = [];
+        var taps = [];
 
         drawClouds(this.stage).forEach(function (elem) {
-            drawables.push(elem);
-        });
-        drawIcons(this.stage).forEach(function (elem) {
             drawables.push(elem);
         });
 
@@ -55,6 +55,15 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
                 drawButtons(self.buttons, self.messages, self.timer, toNextScene).forEach(function (elem) {
                     buttons.push(elem);
                 });
+                var icons = drawIcons(self.stage, self.sceneStorage, self.events, self.buttons, self.messages,
+                    self.device, self.sounds, self.tap);
+
+                icons.drawables.forEach(function (elem) {
+                    drawables.push(elem);
+                });
+                icons.taps.forEach(function (elem) {
+                    taps.push(elem);
+                });
             }, 6);
 
             var goFsScreen = false;
@@ -72,10 +81,10 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
                     goFsScreen = false;
                     self.events.fire(Event.REMOVE_GO_FULL_SCREEN);
                     if (!rotateScreen && !shouldShowRotateScreen) {
-                        if (self.storage.menuOn) {
+                        if (self.sceneStorage.menuOn) {
                             self.events.fire(Event.RESUME_MENU);
-                        } else if (self.storage.shouldShowMenu) {
-                            self.storage.shouldShowMenu = false;
+                        } else if (self.sceneStorage.shouldShowMenu) {
+                            self.sceneStorage.shouldShowMenu = false;
                             self.events.fire(Event.SHOW_MENU);
                         } else {
                             self.events.fire(Event.RESUME);
@@ -106,10 +115,10 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
                         rotateScreen = false;
                         self.events.fire(Event.REMOVE_ROTATE_DEVICE);
                         if (!goFsScreen && !shouldShowGoFsScreen) {
-                            if (self.storage.menuOn) {
+                            if (self.sceneStorage.menuOn) {
                                 self.events.fire(Event.RESUME_MENU);
-                            } else if (self.storage.shouldShowMenu) {
-                                self.storage.shouldShowMenu = false;
+                            } else if (self.sceneStorage.shouldShowMenu) {
+                                self.sceneStorage.shouldShowMenu = false;
                                 self.events.fire(Event.SHOW_MENU);
                             } else {
                                 self.events.fire(Event.RESUME);
@@ -151,9 +160,9 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
         }
 
         self.events.subscribe(Event.PAGE_VISIBILITY, function (hidden) {
-            //if (hidden && self.storage.sfxOn) {
+            //if (hidden && self.sceneStorage.sfxOn) {
             //    self.sounds.muteAll();
-            //} else if (!hidden && self.storage.sfxOn) {
+            //} else if (!hidden && self.sceneStorage.sfxOn) {
             //    self.sounds.unmuteAll();
             //}
         });
@@ -183,6 +192,7 @@ var StartScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawBut
 
             drawables.forEach(self.stage.remove.bind(self.stage));
             buttons.forEach(self.buttons.remove.bind(self.buttons));
+            taps.forEach(self.tap.remove.bind(self.tap));
 
             self.timer.doLater(next, 16);
         }

@@ -4,10 +4,14 @@ var EndScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawButto
 
     function EndScreen(services) {
         this.stage = services.stage;
-        this.storage = services.sceneStorage;
+        this.sceneStorage = services.sceneStorage;
         this.buttons = services.buttons;
         this.messages = services.messages;
         this.timer = services.timer;
+        this.events = services.events;
+        this.device = services.device;
+        this.sounds = services.sounds;
+        this.tap = services.tap;
     }
 
     var STORAGE_BEST = 'kitty_go_round-best';
@@ -18,20 +22,29 @@ var EndScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawButto
         var self = this;
         var drawables = [];
         var buttons = [];
+        var taps = [];
 
         drawClouds(this.stage).forEach(function (elem) {
             drawables.push(elem);
         });
-        drawIcons(this.stage).forEach(function (elem) {
+        var icons = drawIcons(self.stage, self.sceneStorage, self.events, self.buttons, self.messages, self.device,
+            self.sounds, self.tap);
+
+        icons.drawables.forEach(function (elem) {
             drawables.push(elem);
+        });
+        icons.taps.forEach(function (elem) {
+            taps.push(elem);
         });
 
         var best = loadInteger(STORAGE_BEST);
-        var points = this.storage.points;
+        var points = this.sceneStorage.points;
         var newRecord = points > best;
 
-        if (newRecord)
+        if (newRecord) {
             localStorage.setItem(STORAGE_BEST, points);
+            best = points;
+        }
 
         var scoreTxt = this.stage.drawText(Width.HALF, Height.get(48, 12), this.messages.get('end', 'score'), Font._15,
             'GameFont', '#fc6da4');
@@ -82,6 +95,7 @@ var EndScreen = (function (drawClouds, drawIcons, Width, Height, Font, drawButto
 
             drawables.forEach(self.stage.remove.bind(self.stage));
             buttons.forEach(self.buttons.remove.bind(self.buttons));
+            taps.forEach(self.tap.remove.bind(self.tap));
 
             next();
         }

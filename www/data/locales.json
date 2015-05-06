@@ -37,6 +37,10 @@
             "a": "a",
             "game": "game",
             "by": "by"
+        },
+        "common_buttons": {
+            "back": "back",
+            "resume": "resume"
         }
     },
     "de": {
@@ -57,13 +61,13 @@
             "ok": "ok",
             "full_screen": "Fullscreen",
             "sound": "Ton",
-            "no_sound": "Tonwiedergabe nicht unterst\u00DCtzt",
+            "no_sound": "Tonwiedergabe nicht unterst\u00FCtzt",
             "language": "Sprache",
             "on": "An",
             "off": "Aus",
             "credits": "Credits",
-            "reset_game": "Spiel zur\u00DCcksetzen",
-            "sure_reset": "Spiel wirklich zur\u00DCcksetzen?"
+            "reset_game": "Spiel zur\u00FCcksetzen",
+            "sure_reset": "Spiel wirklich zur\u00FCcksetzen?"
         },
         "go_full_screen": {
             "exit_full_screen": "Fullscreen beenden?",
@@ -71,12 +75,16 @@
             "cancel": "beenden"
         },
         "rotate": {
-            "rotate_device": "Bitte, GER\u00C4T drehen"
+            "rotate_device": "Bitte, Ger\u00E4t drehen"
         },
         "credits": {
             "a": "ein",
             "game": "Spiel",
             "by": "von"
+        },
+        "common_buttons": {
+            "back": "zur\u00FCck",
+            "resume": "weiter"
         }
     }
 }

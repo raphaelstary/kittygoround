@@ -9,6 +9,7 @@ var installMyScenes = (function (SceneManager, TapManager, Event, ButtonFactory,
     function installMyScenes(sceneServices) {
 
         var tap = new TapManager();
+        sceneServices.tap = tap;
         sceneServices.events.subscribe(Event.POINTER, tap.inputChanged.bind(tap));
 
         sceneServices.buttons = new ButtonFactory(sceneServices.stage, tap, sceneServices.timer, FONT, function () {

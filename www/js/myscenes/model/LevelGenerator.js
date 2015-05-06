@@ -25,7 +25,7 @@ var LevelGenerator = (function (range) {
 
                 kittySpeed: 60 + 15,
                 pauseAfterKitty: 90,
-                maxTimeToNextKitty: 120
+                maxTimeToNextKitty: 105
             }, {
                 id: 2,
                 maxObstacles: 10,
