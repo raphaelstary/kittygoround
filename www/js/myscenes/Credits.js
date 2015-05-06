@@ -19,7 +19,6 @@ var Credits = (function (Transition, window, calcScreenConst, subtract, add, Wid
 
     var SPECIAL_FONT = 'GameFont';
     var LIGHT_GREY = '#c4c4c4';
-    var FONT = 'GameFont';
     var WHITE = '#fff';
     var RAPHAEL_STARY = 'RAPHAEL STARY';
     var LOGO_FONT = 'LogoFont';
